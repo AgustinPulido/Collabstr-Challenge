@@ -10,9 +10,9 @@ from .services.llm import generate_brief
 
 profanity.load_censor_words()
 
-ALLOWED_PLATFORMS = {"Instagram", "TikTok", "YouTube", "Twitter", "LinkedIn", "Pinterest"}
-ALLOWED_GOALS = {"Awareness", "Engagement", "Conversions", "Followers", "Traffic"}
-ALLOWED_TONES = {"Professional", "Casual", "Playful", "Inspirational", "Bold"}
+ALLOWED_PLATFORMS = {"Instagram", "TikTok", "YouTube", "Twitter", "LinkedIn", "Pinterest", "UGC"}
+ALLOWED_GOALS = {"Awareness", "Engagement", "Conversions", "Followers", "Traffic", "Content Assets"}
+ALLOWED_TONES = {"Professional", "Casual", "Playful", "Inspirational", "Bold", "Friendly"}
 
 
 def _err(msg: str, status: int = 400) -> JsonResponse:
