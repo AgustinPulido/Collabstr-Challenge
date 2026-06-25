@@ -295,32 +295,43 @@ ul.criteria li::before {
 .telemetry {
   display: flex;
   flex-wrap: wrap;
-  gap: .5rem .75rem;
-  padding: .75rem 1rem;
-  background: var(--bg);
+  align-items: center;
+  gap: .35rem .5rem;
+  padding: .6rem 1rem;
+  background: var(--surface);
   border: 1px solid var(--border);
+  border-left: 3px solid var(--purple);
   border-radius: 8px;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 }
 
 .tel-item {
-  font-size: .72rem;
-  color: var(--text-muted);
   display: flex;
-  align-items: center;
-  gap: 4px;
+  flex-direction: column;
+  gap: 1px;
+  padding: .25rem .5rem;
+}
+
+.tel-item span {
+  font-size: .6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--text-muted);
 }
 
 .tel-item strong {
-  color: var(--text);
+  font-size: .78rem;
   font-weight: 600;
+  color: var(--text);
 }
 
 .tel-dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
+  width: 1px;
+  height: 28px;
   background: var(--border);
+  margin: 0 .1rem;
+  flex-shrink: 0;
 }
 
 /* ─── Error ──────────────────────────────────────────────────────── */
