@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%237c3aed'/><path d='M21.5 11.2C20.4 9.8 18.8 9 17 9c-3.3 0-6 2.7-6 6s2.7 6 6 6c1.8 0 3.4-.8 4.5-2.2' stroke='white' stroke-width='2.4' stroke-linecap='round' fill='none'/></svg>" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23f04e98'/><path d='M21.5 11.2C20.4 9.8 18.8 9 17 9c-3.3 0-6 2.7-6 6s2.7 6 6 6c1.8 0 3.4-.8 4.5-2.2' stroke='white' stroke-width='2.4' stroke-linecap='round' fill='none'/></svg>" />
   <link rel="stylesheet" href="{% static 'css/main.css' %}" />
 </head>
 
@@ -17,7 +17,7 @@
 
   <!-- Nav -->
   <nav>
-    <a class="nav-logo" href="/">Collabstr<span> AI</span></a>
+    <a class="nav-logo" href="/">collabstr<span> AI</span></a>
   </nav>
 
   <!-- Hero -->
@@ -130,6 +130,60 @@
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script>
     $(function () {
+
+      // ── Custom selects ────────────────────────────────────────────
+      function closeAll() {
+        $('.custom-select-trigger').removeClass('is-open');
+        $('.custom-select-options').hide();
+      }
+
+      $('.select-wrap').each(function () {
+        const $native = $(this).find('select');
+        const options = [];
+        $native.find('option').each(function () {
+          options.push({ value: $(this).val(), label: $(this).text() });
+        });
+        const def = options[0];
+
+        const $cs = $([
+          '<div class="custom-select">',
+            '<button type="button" class="custom-select-trigger">',
+              '<span>' + def.label + '</span>',
+              '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
+            '</button>',
+            '<ul class="custom-select-options">',
+              options.map(function (o, i) {
+                return '<li data-value="' + o.value + '"' + (i === 0 ? ' class="is-selected"' : '') + '>' + o.label + '</li>';
+              }).join(''),
+            '</ul>',
+          '</div>'
+        ].join(''));
+
+        $(this).append($cs);
+
+        const $trigger = $cs.find('.custom-select-trigger');
+        const $list    = $cs.find('.custom-select-options');
+        const $label   = $trigger.find('span');
+
+        $trigger.on('click', function (e) {
+          e.stopPropagation();
+          var wasOpen = $trigger.hasClass('is-open');
+          closeAll();
+          if (!wasOpen) { $trigger.addClass('is-open'); $list.show(); }
+        });
+
+        $list.find('li').on('click', function () {
+          $list.find('li').removeClass('is-selected');
+          $(this).addClass('is-selected');
+          $label.text($(this).text());
+          $native.val($(this).data('value'));
+          closeAll();
+        });
+      });
+
+      $(document).on('click', closeAll);
+      // ─────────────────────────────────────────────────────────────
+
       const $form = $('#brief-form');
       const $btn = $('#submit-btn');
       const $error = $('#error-box');
