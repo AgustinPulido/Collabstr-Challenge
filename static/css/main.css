@@ -1,19 +1,25 @@
 /* ─── Design tokens (Collabstr palette) ─────────────────────────── */
 :root {
-  --purple:       #7c3aed;
+  --purple: #7c3aed;
   --purple-light: #ede9fe;
-  --purple-dark:  #5b21b6;
-  --text:         #111827;
-  --text-muted:   #6b7280;
-  --border:       #e5e7eb;
-  --surface:      #ffffff;
-  --bg:           #f9fafb;
-  --radius:       12px;
-  --shadow:       0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.06);
-  --shadow-lg:    0 4px 6px rgba(0,0,0,.07), 0 10px 30px rgba(0,0,0,.1);
+  --purple-dark: #5b21b6;
+  --text: #111827;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+  --surface: #ffffff;
+  --bg: #f9fafb;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, .08), 0 4px 12px rgba(0, 0, 0, .06);
+  --shadow-lg: 0 4px 6px rgba(0, 0, 0, .07), 0 10px 30px rgba(0, 0, 0, .1);
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   font-family: 'Inter', sans-serif;
@@ -31,6 +37,7 @@ nav {
   align-items: center;
   height: 60px;
 }
+
 .nav-logo {
   font-size: 1.2rem;
   font-weight: 700;
@@ -38,13 +45,17 @@ nav {
   letter-spacing: -0.5px;
   text-decoration: none;
 }
-.nav-logo span { color: var(--text); }
+
+.nav-logo span {
+  color: var(--text);
+}
 
 /* ─── Hero ───────────────────────────────────────────────────────── */
 .hero {
   text-align: center;
   padding: 3.5rem 1rem 2rem;
 }
+
 .hero-badge {
   display: inline-flex;
   align-items: center;
@@ -59,6 +70,7 @@ nav {
   letter-spacing: .4px;
   text-transform: uppercase;
 }
+
 .hero h1 {
   font-size: clamp(1.75rem, 4vw, 2.6rem);
   font-weight: 700;
@@ -67,7 +79,12 @@ nav {
   color: var(--text);
   margin-bottom: .6rem;
 }
-.hero h1 em { color: var(--purple); font-style: normal; }
+
+.hero h1 em {
+  color: var(--purple);
+  font-style: normal;
+}
+
 .hero p {
   color: var(--text-muted);
   font-size: 1.05rem;
@@ -78,15 +95,23 @@ nav {
 
 /* ─── Main layout ─────────────────────────────────────────────────── */
 .layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  align-items: flex-start;
   gap: 1.5rem;
   max-width: 1040px;
   margin: 0 auto;
   padding: 0 1.5rem 4rem;
 }
+
+.layout>.card {
+  flex: 1;
+  min-width: 0;
+}
+
 @media (max-width: 720px) {
-  .layout { grid-template-columns: 1fr; }
+  .layout {
+    flex-direction: column;
+  }
 }
 
 /* ─── Card ───────────────────────────────────────────────────────── */
@@ -97,6 +122,7 @@ nav {
   box-shadow: var(--shadow);
   padding: 1.75rem;
 }
+
 .card-title {
   font-size: .7rem;
   font-weight: 600;
@@ -107,7 +133,10 @@ nav {
 }
 
 /* ─── Form ───────────────────────────────────────────────────────── */
-.form-group { margin-bottom: 1.1rem; }
+.form-group {
+  margin-bottom: 1.1rem;
+}
+
 label {
   display: block;
   font-size: .85rem;
@@ -115,7 +144,9 @@ label {
   color: var(--text);
   margin-bottom: .4rem;
 }
-input[type="text"], select {
+
+input[type="text"],
+select {
   width: 100%;
   padding: .65rem .85rem;
   border: 1.5px solid var(--border);
@@ -128,19 +159,26 @@ input[type="text"], select {
   appearance: none;
   -webkit-appearance: none;
 }
-input[type="text"]:focus, select:focus {
+
+input[type="text"]:focus,
+select:focus {
   outline: none;
   border-color: var(--purple);
-  box-shadow: 0 0 0 3px rgba(124,58,237,.12);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, .12);
 }
-.select-wrap { position: relative; }
+
+.select-wrap {
+  position: relative;
+}
+
 .select-wrap::after {
   content: "";
   position: absolute;
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  width: 0; height: 0;
+  width: 0;
+  height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 5px solid var(--text-muted);
@@ -166,25 +204,41 @@ input[type="text"]:focus, select:focus {
   justify-content: center;
   gap: 8px;
 }
+
 .btn-primary:hover:not(:disabled) {
   background: var(--purple-dark);
-  box-shadow: 0 4px 12px rgba(124,58,237,.35);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, .35);
 }
-.btn-primary:active:not(:disabled) { transform: translateY(1px); }
-.btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn-primary:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
 
 /* ─── Spinner ────────────────────────────────────────────────────── */
 .spinner {
-  width: 16px; height: 16px;
-  border: 2px solid rgba(255,255,255,.4);
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, .4);
   border-top-color: #fff;
   border-radius: 50%;
   animation: spin .65s linear infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 /* ─── Result panel ───────────────────────────────────────────────── */
-#result-panel { display: none; }
+#result-panel {
+  display: none;
+}
 
 .brief-text {
   font-size: .95rem;
@@ -206,6 +260,7 @@ ol.angles {
   padding-left: 1.2rem;
   margin-bottom: 1.5rem;
 }
+
 ol.angles li {
   font-size: .9rem;
   line-height: 1.55;
@@ -218,6 +273,7 @@ ul.criteria {
   padding: 0;
   margin-bottom: 1.5rem;
 }
+
 ul.criteria li {
   font-size: .9rem;
   line-height: 1.55;
@@ -226,6 +282,7 @@ ul.criteria li {
   padding-left: 1.2rem;
   position: relative;
 }
+
 ul.criteria li::before {
   content: "✓";
   position: absolute;
@@ -245,6 +302,7 @@ ul.criteria li::before {
   border-radius: 8px;
   margin-top: 1rem;
 }
+
 .tel-item {
   font-size: .72rem;
   color: var(--text-muted);
@@ -252,12 +310,15 @@ ul.criteria li::before {
   align-items: center;
   gap: 4px;
 }
+
 .tel-item strong {
   color: var(--text);
   font-weight: 600;
 }
+
 .tel-dot {
-  width: 4px; height: 4px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: var(--border);
 }
@@ -285,12 +346,28 @@ ul.criteria li::before {
   color: var(--text-muted);
   gap: .75rem;
 }
-.empty-state svg { opacity: .3; }
-.empty-state p { font-size: .9rem; }
+
+.empty-state svg {
+  opacity: .3;
+}
+
+.empty-state p {
+  font-size: .9rem;
+}
 
 /* ─── Fade-in ─────────────────────────────────────────────────────── */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.fade-in { animation: fadeUp .3s ease forwards; }
+
+.fade-in {
+  animation: fadeUp .3s ease forwards;
+}

@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,6 +12,7 @@
   <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}" />
   <link rel="stylesheet" href="{% static 'css/main.css' %}" />
 </head>
+
 <body>
 
   <!-- Nav -->
@@ -22,11 +24,11 @@
   <div class="hero">
     <div class="hero-badge">
       <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
-        <circle cx="5" cy="5" r="5"/>
+        <circle cx="5" cy="5" r="5" />
       </svg>
       Powered by Claude Haiku 4.5
     </div>
-    <h1>Generate your <em>campaign brief</em><br/>in seconds</h1>
+    <h1>Generate your <em>campaign brief</em><br />in seconds</h1>
     <p>Enter a brand and a few preferences — get a polished brief, content angles, and creator criteria instantly.</p>
   </div>
 
@@ -34,7 +36,7 @@
   <div class="layout">
 
     <!-- Left: Form -->
-    <div class="card">
+    <div class="card form-card">
       <p class="card-title">Campaign details</p>
       <form id="brief-form" novalidate>
 
@@ -102,7 +104,7 @@
       <div id="empty-state" class="empty-state">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path stroke-linecap="round" stroke-linejoin="round"
-            d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/>
+            d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
         </svg>
         <p>Your brief will appear here once you generate it.</p>
       </div>
@@ -128,14 +130,14 @@
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script>
     $(function () {
-      const $form      = $('#brief-form');
-      const $btn       = $('#submit-btn');
-      const $error     = $('#error-box');
-      const $empty     = $('#empty-state');
-      const $result    = $('#result-panel');
-      const $brief     = $('#brief-text');
-      const $angles    = $('#angles-list');
-      const $criteria  = $('#criteria-list');
+      const $form = $('#brief-form');
+      const $btn = $('#submit-btn');
+      const $error = $('#error-box');
+      const $empty = $('#empty-state');
+      const $result = $('#result-panel');
+      const $brief = $('#brief-text');
+      const $angles = $('#angles-list');
+      const $criteria = $('#criteria-list');
       const $telemetry = $('#telemetry-bar');
 
       function showError(msg) {
@@ -205,14 +207,14 @@
         }
 
         const payload = {
-          brand:    brand,
+          brand: brand,
           platform: $('#platform').val(),
-          goal:     $('#goal').val(),
-          tone:     $('#tone').val(),
+          goal: $('#goal').val(),
+          tone: $('#tone').val(),
         };
 
         setLoading(true);
-        $result.hide();
+        $result.hide().removeClass('fade-in');
         $empty.show();
 
         $.ajax({
@@ -229,7 +231,7 @@
               const json = JSON.parse(xhr.responseText);
               if (json.error) msg = json.error;
               if (xhr.status === 429) msg = 'Rate limit reached. Please wait a moment before trying again.';
-            } catch (_) {}
+            } catch (_) { }
             showError(msg);
             $empty.show();
           },
@@ -241,4 +243,5 @@
     });
   </script>
 </body>
+
 </html>
