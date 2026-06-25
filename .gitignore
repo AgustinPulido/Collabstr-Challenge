@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Django
+db.sqlite3
+staticfiles/
+*.log
+
+# Environment & secrets
+.env
+
+# Claude Code internal
+.claude/
+
+# Docker volumes
+staticfiles/

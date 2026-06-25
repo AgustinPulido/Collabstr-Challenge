@@ -1,0 +1,241 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Brief Generator — Collabstr</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}" />
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a class="nav-logo" href="/">Collabstr<span> AI</span></a>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+        <circle cx="5" cy="5" r="5"/>
+      </svg>
+      Powered by Claude Haiku 4.5
+    </div>
+    <h1>Generate your <em>campaign brief</em><br/>in seconds</h1>
+    <p>Enter a brand and a few preferences — get a polished brief, content angles, and creator criteria instantly.</p>
+  </div>
+
+  <!-- Main -->
+  <div class="layout">
+
+    <!-- Left: Form -->
+    <div class="card">
+      <p class="card-title">Campaign details</p>
+      <form id="brief-form" novalidate>
+
+        <div class="form-group">
+          <label for="brand">Brand name</label>
+          <input type="text" id="brand" name="brand" placeholder="e.g. Glossier" maxlength="80" required />
+        </div>
+
+        <div class="form-group">
+          <label for="platform">Target platform</label>
+          <div class="select-wrap">
+            <select id="platform" name="platform">
+              <option value="Instagram">Instagram</option>
+              <option value="TikTok">TikTok</option>
+              <option value="YouTube">YouTube</option>
+              <option value="Twitter">Twitter</option>
+              <option value="LinkedIn">LinkedIn</option>
+              <option value="Pinterest">Pinterest</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="goal">Campaign goal</label>
+          <div class="select-wrap">
+            <select id="goal" name="goal">
+              <option value="Awareness">Awareness</option>
+              <option value="Engagement">Engagement</option>
+              <option value="Conversions">Conversions</option>
+              <option value="Followers">Followers</option>
+              <option value="Traffic">Traffic</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tone">Brand tone</label>
+          <div class="select-wrap">
+            <select id="tone" name="tone">
+              <option value="Professional">Professional</option>
+              <option value="Casual">Casual</option>
+              <option value="Playful">Playful</option>
+              <option value="Inspirational">Inspirational</option>
+              <option value="Bold">Bold</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="submit-btn">
+          Generate Brief
+        </button>
+
+        <div class="error-box" id="error-box"></div>
+
+      </form>
+    </div>
+
+    <!-- Right: Result -->
+    <div class="card" id="result-card">
+
+      <!-- Empty state (shown before first generation) -->
+      <div id="empty-state" class="empty-state">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/>
+        </svg>
+        <p>Your brief will appear here once you generate it.</p>
+      </div>
+
+      <!-- Result content (hidden until generated) -->
+      <div id="result-panel">
+        <p class="card-title">Generated brief</p>
+
+        <p class="brief-text" id="brief-text"></p>
+
+        <div class="section-label">Content Angles</div>
+        <ol class="angles" id="angles-list"></ol>
+
+        <div class="section-label">Creator Criteria</div>
+        <ul class="criteria" id="criteria-list"></ul>
+
+        <div class="telemetry" id="telemetry-bar"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    $(function () {
+      const $form      = $('#brief-form');
+      const $btn       = $('#submit-btn');
+      const $error     = $('#error-box');
+      const $empty     = $('#empty-state');
+      const $result    = $('#result-panel');
+      const $brief     = $('#brief-text');
+      const $angles    = $('#angles-list');
+      const $criteria  = $('#criteria-list');
+      const $telemetry = $('#telemetry-bar');
+
+      function showError(msg) {
+        $error.text(msg).show();
+      }
+
+      function clearError() {
+        $error.hide().text('');
+      }
+
+      function setLoading(on) {
+        if (on) {
+          $btn.prop('disabled', true).html(
+            '<span class="spinner"></span> Generating…'
+          );
+        } else {
+          $btn.prop('disabled', false).text('Generate Brief');
+        }
+      }
+
+      function renderResult(data) {
+        $brief.text(data.brief);
+
+        $angles.empty();
+        $.each(data.angles, function (_, angle) {
+          $angles.append($('<li>').text(angle));
+        });
+
+        $criteria.empty();
+        $.each(data.criteria, function (_, c) {
+          $criteria.append($('<li>').text(c));
+        });
+
+        const t = data.telemetry;
+        $telemetry.html(
+          telItem('Latency', t.latency_ms + ' ms') +
+          dot() +
+          telItem('Prompt tokens', t.prompt_tokens) +
+          dot() +
+          telItem('Completion tokens', t.completion_tokens) +
+          dot() +
+          telItem('Total tokens', t.total_tokens) +
+          dot() +
+          telItem('Model', t.model)
+        );
+
+        $empty.hide();
+        $result.addClass('fade-in').show();
+      }
+
+      function telItem(label, value) {
+        return '<div class="tel-item">' + label + ': <strong>' + value + '</strong></div>';
+      }
+      function dot() {
+        return '<div class="tel-dot"></div>';
+      }
+
+      $form.on('submit', function (e) {
+        e.preventDefault();
+        clearError();
+
+        const brand = $('#brand').val().trim();
+        if (!brand) {
+          showError('Please enter a brand name.');
+          $('#brand').focus();
+          return;
+        }
+
+        const payload = {
+          brand:    brand,
+          platform: $('#platform').val(),
+          goal:     $('#goal').val(),
+          tone:     $('#tone').val(),
+        };
+
+        setLoading(true);
+        $result.hide();
+        $empty.show();
+
+        $.ajax({
+          url: '/api/generate/',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(payload),
+          success: function (data) {
+            renderResult(data);
+          },
+          error: function (xhr) {
+            let msg = 'Something went wrong. Please try again.';
+            try {
+              const json = JSON.parse(xhr.responseText);
+              if (json.error) msg = json.error;
+              if (xhr.status === 429) msg = 'Rate limit reached. Please wait a moment before trying again.';
+            } catch (_) {}
+            showError(msg);
+            $empty.show();
+          },
+          complete: function () {
+            setLoading(false);
+          },
+        });
+      });
+    });
+  </script>
+</body>
+</html>
