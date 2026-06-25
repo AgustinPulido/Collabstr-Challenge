@@ -66,7 +66,7 @@ def generate_brief(brand: str, platform: str, goal: str, tone: str) -> dict:
     response = _get_client().messages.create(
         model="claude-haiku-4-5",
         max_tokens=600,
-        temperature=0.5,
+        temperature=0.4,
         system=SYSTEM_PROMPT,
         tools=[BRIEF_TOOL],
         tool_choice={"type": "tool", "name": "campaign_brief"},
