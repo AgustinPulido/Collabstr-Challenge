@@ -69,7 +69,7 @@ Every response includes a `telemetry` object:
 
 ## Loom Demo
 
-[Link to be added after recording]
+https://www.loom.com/share/9cc75a5182604a26b15b649e824d3d58
 
 ---
 
